@@ -1,0 +1,73 @@
+version: '3.5'
+
+services:
+ 
+ 
+  # jenkins
+  jenkins:
+    container_name: deployment_jenkins
+    image: denitiawan/jenkins-with-docker:1.0
+    environment:      
+          
+      APP_PORT: 12345
+      APP_DB_HOST: deployment_db_mysql
+      APP_DB_PORT: 3366
+      APP_DB_NAME: db_spring
+      APP_DB_USER: user
+      APP_DB_PASSWORD: password
+           
+      
+    ports:      
+      - '9999:8080'
+    expose:      
+      - '9999'      
+    volumes:
+      - jenkins:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    
+    networks:
+      - network
+            
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5      
+    
+
+
+    
+  # mysql database for springboot app
+  db_mysql:
+    container_name: 'deployment_db_mysql'
+    image: mysql:5.7    
+    environment:      
+      MYSQL_DATABASE: 'db_spring'              
+      MYSQL_USER: 'user'      
+      MYSQL_PASSWORD: 'password'      
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3366
+    ports:
+      - 3366:3366
+    expose:
+      - '3366'
+    volumes:    
+      - ./db_mysql:/docker-entrypoint-initdb.d/
+      - db_mysql:/var/lib/mysql
+    networks:
+      - network      
+    
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5   
+    
+
+            
+  
+networks:  
+  network:    
+    driver: bridge
+
+volumes:          
+    db_mysql:    
+    jenkins: 
+     
+ 

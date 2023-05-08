@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+
+  mysql:
+    container_name: docker_spring_mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'database'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_TCP_PORT: 3300
+    ports:
+      - 3300:3300
+    expose:
+      - '3300'
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  mysql:
+    driver: local
