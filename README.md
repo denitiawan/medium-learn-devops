@@ -1,2 +1,2 @@
-# learn-devops
-learning devops skills and tools for backend developer
+# Medium Learn DevOPS
+DevOps repositories for my articles on medium blog
